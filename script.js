@@ -150,6 +150,8 @@ window.onload = function () {
 
       const bookAuthor = document.createElement("a");
       bookAuthor.innerText = book["volumeInfo"]["authors"];
+      bookAuthor.href = book["volumeInfo"]["canonicalVolumeLink"];
+      bookTitle.target = "blank";
       bookAuthor.classList.add("book-author");
       bookInfo.appendChild(bookAuthor);
 
