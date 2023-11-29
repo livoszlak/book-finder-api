@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Just a nice little exercise in utilizing an API to fetch and display data."
+    />
+    <meta
+      name="keywords"
+      content="Google Books, Google Books API, book search, author search, title search"
+    />
+    <meta name="author" content="L. Oszlak" />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&?family=IBM+Plex+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <title>BookFinder</title>
+  </head>
+  <body>
+    <main>
+      <div class="header-wrapper">
+        <div class="title-shelf-wrapper">
+          <h1>Let's find some books!</h1>
+          <div class="shelf"></div>
+        </div>
+        <p class="description">
+          Use the
+          <a href="https://developers.google.com/books">Google Books API</a> to
+          look for some books! Who knows, you might even find some! This search
+          function will return up to <strong>40</strong> results fetched by
+          relevance, but does not currently support pagination. Search for your
+          favorite book by title or by author. Click on the title to go to the
+          Google Books page for that specific book. Happy reading!
+        </p>
+      </div>
+      <div class="search">
+        <div class="input-wrapper">
+          <input
+            class="input-field"
+            type="text"
+            id="search-term"
+            name="search-term"
+            placeholder="Enter search term"
+          />
+        </div>
+        <div class="select-wrapper">
+          <select class="select" id="search-type" name="search-type">
+            <option value="title" name="title">Title</option>
+            <option value="author" name="title">Author</option>
+            <option value="both" name="both">Both</option>
+          </select>
+          <select class="select" id="sort-type" name="sort-type">
+            <option value="title" name="title">Sort by title</option>
+            <option value="author" name="author">Sort by author</option>
+          </select>
+        </div>
+        <div class="button-wrapper">
+          <button class="button" id="search-button" name="search-button">
+            Search
+          </button>
+          <button class="button" id="clear-button" name="search-button">
+            Clear Search
+          </button>
+        </div>
+      </div>
+
+      <div class="data-wrapper" id="data-wrapper"></div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
