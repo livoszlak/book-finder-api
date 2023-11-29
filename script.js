@@ -87,13 +87,13 @@ window.onload = function () {
             uniqueBooks.push(item);
           } else if (
             searchType === "title" &&
-            item.volumeInfo.title
-              .toLowerCase()
+            item.volumeInfo?.title
+              ?.toLowerCase()
               .includes(searchValue.toLowerCase())
           ) {
             uniqueBooks.push(item);
-          } else if (searchType !== "author" && searchType !== "title") {
-            uniqueBooks.push(item);
+            // } else if (searchType !== "author" && searchType !== "title") {
+            //   uniqueBooks.push(item);
           }
         }
       }
@@ -145,10 +145,13 @@ window.onload = function () {
       bookTitle.classList.add("book-title");
       bookInfo.appendChild(bookTitle);
 
-      const bookAuthor = document.createElement("p");
+      const lineBreak = document.createElement("br");
+      bookTitle.after(lineBreak);
+
+      const bookAuthor = document.createElement("a");
       bookAuthor.innerText = book["volumeInfo"]["authors"];
       bookAuthor.classList.add("book-author");
-      /*bookInfo.appendChild(bookAuthor);*/
+      bookInfo.appendChild(bookAuthor);
 
       const bookCoverWrapper = document.createElement("div");
       bookCoverWrapper.classList.add("cover-wrapper");
