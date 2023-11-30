@@ -2,6 +2,7 @@
 :root {
   --shadow: rgba(0, 0, 0, 0.76);
   --accent: #9932cc;
+  --focus: #cc32b2;
   --font-color: #2f2626;
   --white: #e5e5e5;
 
@@ -49,13 +50,22 @@ a:hover {
   text-decoration: underline;
 }
 
+button:focus {
+  outline: 2px solid var(--accent);
+}
+
+a:focus {
+  color: var(--focus);
+  outline: none;
+}
+
 /* HEADER STYLES */
 .header-wrapper {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  padding: 50px 0 0 0;
+  padding: 50px 12px 0 12px;
   width: 300px;
 }
 
@@ -212,9 +222,6 @@ button:hover {
   .shelf {
     height: 20px;
   }
-  .search {
-    flex-direction: row;
-  }
   .book-title,
   .book-author,
   p,
@@ -237,6 +244,7 @@ button:hover {
 
   .header-wrapper {
     width: 650px;
+    padding: 50px 42px 0 42px;
   }
 
   h1 {
@@ -245,6 +253,10 @@ button:hover {
 
   .description {
     font-size: var(--web-paragraph-font-size);
+  }
+
+  .search {
+    flex-direction: row;
   }
 
   .search input,
