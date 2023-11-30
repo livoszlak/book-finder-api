@@ -3,7 +3,7 @@
   --shadow: rgba(0, 0, 0, 0.76);
   --accent: #9932cc;
   --focus: #cc32b2;
-  --font-color: #2f2626;
+  --font-color: #332929;
   --white: #e5e5e5;
 
   --heading-font-family: "Goudy Bookletter 1911", serif;
@@ -40,6 +40,13 @@ main {
   gap: 5px;
 }
 
+p,
+h1,
+input,
+select {
+  color: var(--font-color);
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
@@ -47,11 +54,8 @@ a {
 
 a:hover {
   cursor: pointer;
-  text-decoration: underline;
-}
-
-button:focus {
-  outline: 2px solid var(--accent);
+  text-decoration: none;
+  color: var(--focus);
 }
 
 a:focus {
@@ -72,10 +76,10 @@ a:focus {
 h1 {
   font-family: var(--heading-font-family);
   font-size: var(--mobile-heading-font-size);
-  color: var(--font-color);
   margin: 0;
   animation: slideIn 1s ease-in-out forwards;
   line-height: 70%;
+  opacity: 90%;
 }
 
 .title-shelf-wrapper {
@@ -90,6 +94,7 @@ h1 {
   background-image: url(assets/img-wood-texture.png);
   background-repeat: repeat-x;
   margin: 0;
+  opacity: 90%;
 }
 
 .description {
@@ -114,27 +119,29 @@ h1 {
   width: 165px;
 }
 
-.search input,
-.search select,
-.select option,
-.search button {
-  font-size: var(--mobile-paragraph-font-size);
+input,
+select,
+option {
+  border: 1px solid var(--accent);
 }
 
-.search input,
-.search select,
-.search button {
-  border: 1px solid var(--accent);
+input,
+select,
+option,
+button {
+  font-size: var(--mobile-paragraph-font-size);
   border-radius: 5px;
 }
 
-.search button {
+button {
   background-color: var(--accent);
   color: var(--white);
+  border: none;
 }
 
 button:hover {
   cursor: pointer;
+  background-color: var(--focus);
 }
 
 /* DATA DISPLAY STYLES */
@@ -151,7 +158,7 @@ button:hover {
 /* BOOK STYLES */
 .book-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-flow: column nowrap;
   width: 150px;
   height: 210px;
   gap: 5px;
