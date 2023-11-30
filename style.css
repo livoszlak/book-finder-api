@@ -167,7 +167,6 @@ button:hover {
   justify-content: center;
   padding: 10px;
   background-image: url(assets/img-noise-book.png);
-  background-size: cover;
   box-shadow: 10px 11px 10px -4px var(--shadow);
   text-align: center;
 }
@@ -176,13 +175,8 @@ button:hover {
   width: 112px;
   height: 150px;
   display: flex;
-  object-fit: cover;
   overflow: hidden;
   justify-content: center;
-}
-
-.book-cover {
-  object-fit: contain;
 }
 
 .book-info {
@@ -205,7 +199,6 @@ button:hover {
   font-family: var(--paragraph-font-family);
   font-size: var(--mobile-paragraph-font-size);
   padding: 0 10px 0 10px;
-  margin: 0;
 }
 
 /*KEYFRAMES*/
