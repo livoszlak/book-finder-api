@@ -45,13 +45,14 @@ window.onload = function () {
       queryParam = "intitle:" + encodeURIComponent(searchValue);
     } else if (searchType === "author") {
       queryParam = "inauthor:" + encodeURIComponent(searchValue);
-    } else {
-      queryParam =
-        "intitle:" +
-        encodeURIComponent(searchValue) +
-        "&inauthor:" +
-        encodeURIComponent(searchValue);
     }
+    // } else {
+    //   queryParam =
+    //     "intitle:" +
+    //     encodeURIComponent(searchValue) +
+    //     "&inauthor:" +
+    //     encodeURIComponent(searchValue);
+    // }
 
     const response = await fetch(
       baseUrl +
