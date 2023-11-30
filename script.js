@@ -92,8 +92,6 @@ window.onload = function () {
               .includes(searchValue.toLowerCase())
           ) {
             uniqueBooks.push(item);
-            // } else if (searchType !== "author" && searchType !== "title") {
-            //   uniqueBooks.push(item);
           }
         }
       }
