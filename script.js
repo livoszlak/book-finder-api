@@ -1,7 +1,7 @@
 window.onload = function () {
   const baseUrl = "https://www.googleapis.com/books/v1/volumes";
-  const dataWrapper = document.getElementById("data-wrapper");
   const key = "AIzaSyCnjNdK4OUoRgi9fwcxHCSlJSg8TA6nPkA";
+  const dataWrapper = document.getElementById("data-wrapper");
 
   let search = document.getElementById("search-term");
 
@@ -101,8 +101,8 @@ window.onload = function () {
     let sortType = document.getElementById("sort-type").value;
     if (sortType === "title") {
       uniqueBooks.sort((a, b) => {
-        const titleA = a.volumeInfo.title.toLowerCase();
-        const titleB = b.volumeInfo.title.toLowerCase();
+        const titleA = a.volumeInfo?.title?.toLowerCase();
+        const titleB = b.volumeInfo?.title?.toLowerCase();
         if (titleA < titleB) {
           return -1;
         }
@@ -113,17 +113,24 @@ window.onload = function () {
       });
     } else if (sortType === "author") {
       uniqueBooks.sort((a, b) => {
-        const authorA = a.volumeInfo.authors[0].split(" ").pop().toLowerCase();
-        const authorB = b.volumeInfo.authors[0].split(" ").pop().toLowerCase();
-        if (authorA < authorB) {
+        const authorA = a.volumeInfo?.authors[0]?.toLowerCase().split(" ");
+        const authorB = b.volumeInfo?.authors[0]?.toLowerCase().split(" ");
+        if (authorA[0] < authorB[0]) {
           return -1;
         }
-        if (authorA > authorB) {
+        if (authorA[0] > authorB[0]) {
+          return 1;
+        }
+        if (authorA[1] < authorB[1]) {
+          return -1;
+        }
+        if (authorA[1] > authorB[1]) {
           return 1;
         }
         return 0;
       });
     }
+
     displayData(uniqueBooks);
   };
 
