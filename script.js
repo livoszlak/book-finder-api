@@ -91,9 +91,11 @@ window.onload = function () {
     clear();
     fetchData(searchValue, searchType, selectedLanguage);
     search.value = "";
+    selectedLanguage.value = "";
   };
 
-  searchButton.addEventListener("click", () => {
+  const handleSearch = () => {
+    clear();
     let searchType = document.getElementById("search-type").value;
     let searchValue = search.value;
     let selectedLanguage = document.getElementById("language").value;
@@ -101,24 +103,17 @@ window.onload = function () {
       let authorName = searchValue;
       let authorLastName = authorName.split(" ").pop();
       searchAndFetchData(authorLastName, searchType, selectedLanguage);
-    } else {
+    } else if (searchType === "title") {
       searchAndFetchData(searchValue, searchType, selectedLanguage);
     }
-  });
+  };
+
+  searchButton.addEventListener("click", handleSearch);
 
   search.addEventListener("keypress", function (keySearch) {
     if (keySearch.key === "Enter") {
       keySearch.preventDefault();
-      let searchType = document.getElementById("search-type").value;
-      let searchValue = search.value;
-      let selectedLanguage = document.getElementById("language").value;
-      if (searchType === "author") {
-        let authorName = searchValue;
-        let authorLastName = authorName.split(" ").pop();
-        searchAndFetchData(authorLastName, searchType, selectedLanguage);
-      } else {
-        searchAndFetchData(searchValue, searchType, selectedLanguage);
-      }
+      handleSearch();
     }
   });
 
