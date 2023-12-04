@@ -5,7 +5,7 @@ window.onload = function () {
 
   let search = document.getElementById("search-term");
 
-  const clear = function () {
+  const clear = () => {
     dataWrapper.innerHTML = "";
   };
 
@@ -14,30 +14,62 @@ window.onload = function () {
     clear();
   });
 
+  const searchAndFetchData = (searchValue, searchType) => {
+    clear();
+    fetchData(searchValue, searchType);
+    search.value = "";
+  };
+
   const searchButton = document.getElementById("search-button");
   searchButton.addEventListener("click", () => {
-    clear();
     let searchType = document.getElementById("search-type").value;
     let searchValue = search.value;
     if (searchType === "author") {
       let authorName = searchValue;
       let authorLastName = authorName.split(" ").pop();
-      fetchData(authorLastName, searchType);
+      searchAndFetchData(authorLastName, searchType);
     } else {
-      fetchData(searchValue, searchType);
+      searchAndFetchData(searchValue, searchType);
     }
-    search.value = "";
   });
 
   search.addEventListener("keypress", function (keySearch) {
     if (keySearch.key === "Enter") {
       keySearch.preventDefault();
       let searchType = document.getElementById("search-type").value;
-      clear();
-      fetchData(search.value, searchType);
-      search.value = "";
+      searchAndFetchData(search.value, searchType);
     }
   });
+
+  const sortByTitle = (a, b) => {
+    const titleA = a.volumeInfo?.title?.toLowerCase();
+    const titleB = b.volumeInfo?.title?.toLowerCase();
+    if (titleA < titleB) {
+      return -1;
+    }
+    if (titleA > titleB) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const sortByAuthor = (a, b) => {
+    const authorA = a.volumeInfo?.authors[0]?.toLowerCase().split(" ");
+    const authorB = b.volumeInfo?.authors[0]?.toLowerCase().split(" ");
+    if (authorA[0] < authorB[0]) {
+      return -1;
+    }
+    if (authorA[0] > authorB[0]) {
+      return 1;
+    }
+    if (authorA[1] < authorB[1]) {
+      return -1;
+    }
+    if (authorA[1] > authorB[1]) {
+      return 1;
+    }
+    return 0;
+  };
 
   const fetchData = async (searchValue, searchType) => {
     let queryParam = "";
@@ -46,13 +78,6 @@ window.onload = function () {
     } else if (searchType === "author") {
       queryParam = "inauthor:" + encodeURIComponent(searchValue);
     }
-    // } else {
-    //   queryParam =
-    //     "intitle:" +
-    //     encodeURIComponent(searchValue) +
-    //     "&inauthor:" +
-    //     encodeURIComponent(searchValue);
-    // }
 
     const response = await fetch(
       baseUrl +
@@ -70,6 +95,7 @@ window.onload = function () {
     const data = await response.json();
 
     let uniqueBooks = [];
+
     data.items.forEach((item) => {
       if (
         item["volumeInfo"]["imageLinks"] &&
@@ -98,85 +124,91 @@ window.onload = function () {
       }
     });
 
+    const displayData = (data) => {
+      data.forEach((book) => {
+        const bookWrapper = createBookWrapper(book);
+        dataWrapper.appendChild(bookWrapper);
+
+        const bookInfo = createBookInfo(book);
+        bookWrapper.appendChild(bookInfo);
+
+        const bookTitle = createBookTitle(book);
+        bookInfo.appendChild(bookTitle);
+
+        const lineBreak = document.createElement("br");
+        bookTitle.after(lineBreak);
+
+        const bookAuthor = createBookAuthor(book);
+        bookInfo.appendChild(bookAuthor);
+
+        const bookCoverWrapper = createBookCoverWrapper(book);
+        bookWrapper.appendChild(bookCoverWrapper);
+
+        const bookCover = createBookCover(
+          book,
+          bookTitle,
+          bookAuthor,
+          bookWrapper
+        );
+        bookCoverWrapper.appendChild(bookCover);
+      });
+    };
+
     let sortType = document.getElementById("sort-type").value;
     if (sortType === "title") {
-      uniqueBooks.sort((a, b) => {
-        const titleA = a.volumeInfo?.title?.toLowerCase();
-        const titleB = b.volumeInfo?.title?.toLowerCase();
-        if (titleA < titleB) {
-          return -1;
-        }
-        if (titleA > titleB) {
-          return 1;
-        }
-        return 0;
-      });
+      uniqueBooks.sort(sortByTitle);
     } else if (sortType === "author") {
-      uniqueBooks.sort((a, b) => {
-        const authorA = a.volumeInfo?.authors[0]?.toLowerCase().split(" ");
-        const authorB = b.volumeInfo?.authors[0]?.toLowerCase().split(" ");
-        if (authorA[0] < authorB[0]) {
-          return -1;
-        }
-        if (authorA[0] > authorB[0]) {
-          return 1;
-        }
-        if (authorA[1] < authorB[1]) {
-          return -1;
-        }
-        if (authorA[1] > authorB[1]) {
-          return 1;
-        }
-        return 0;
-      });
+      uniqueBooks.sort(sortByAuthor);
     }
 
     displayData(uniqueBooks);
   };
+};
 
-  const displayData = (data) => {
-    data.forEach((book) => {
-      const bookWrapper = document.createElement("div");
-      bookWrapper.classList.add("book-wrapper");
-      dataWrapper.appendChild(bookWrapper);
+const createBookWrapper = () => {
+  const bookWrapper = document.createElement("div");
+  bookWrapper.classList.add("book-wrapper");
+  return bookWrapper;
+};
 
-      const bookInfo = document.createElement("div");
-      bookInfo.classList.add("book-info");
-      bookWrapper.appendChild(bookInfo);
+const createBookInfo = () => {
+  const bookInfo = document.createElement("div");
+  bookInfo.classList.add("book-info");
+  return bookInfo;
+};
 
-      const bookTitle = document.createElement("a");
-      bookTitle.innerText = book["volumeInfo"]["title"];
-      bookTitle.href = book["volumeInfo"]["canonicalVolumeLink"];
-      bookTitle.target = "blank";
-      bookTitle.classList.add("book-title");
-      bookInfo.appendChild(bookTitle);
+const createBookTitle = (book) => {
+  const bookTitle = document.createElement("a");
+  bookTitle.innerText = book["volumeInfo"]["title"];
+  bookTitle.href = book["volumeInfo"]["canonicalVolumeLink"];
+  bookTitle.target = "blank";
+  bookTitle.classList.add("book-title");
+  return bookTitle;
+};
 
-      const lineBreak = document.createElement("br");
-      bookTitle.after(lineBreak);
+const createBookAuthor = (book) => {
+  const bookAuthor = document.createElement("a");
+  bookAuthor.innerText = book["volumeInfo"]["authors"];
+  bookAuthor.href = book["volumeInfo"]["canonicalVolumeLink"];
+  bookAuthor.target = "blank";
+  bookAuthor.classList.add("book-author");
+  return bookAuthor;
+};
 
-      const bookAuthor = document.createElement("a");
-      bookAuthor.innerText = book["volumeInfo"]["authors"];
-      bookAuthor.href = book["volumeInfo"]["canonicalVolumeLink"];
-      bookTitle.target = "blank";
-      bookAuthor.classList.add("book-author");
-      bookInfo.appendChild(bookAuthor);
+const createBookCoverWrapper = () => {
+  const bookCoverWrapper = document.createElement("div");
+  bookCoverWrapper.classList.add("cover-wrapper");
+  return bookCoverWrapper;
+};
 
-      const bookCoverWrapper = document.createElement("div");
-      bookCoverWrapper.classList.add("cover-wrapper");
-      bookWrapper.appendChild(bookCoverWrapper);
-
-      const bookCover = document.createElement("img");
-      let coverUrl = book["volumeInfo"]["imageLinks"]["thumbnail"];
-      let noEdgeCurlUrl = coverUrl.replace(/&edge=curl/g, "");
-      bookCover.src = noEdgeCurlUrl;
-      bookCover.alt =
-        "A cover image of " +
-        bookTitle.innerText +
-        " by " +
-        bookAuthor.innerText;
-      bookCover.title = bookTitle.innerText + " by " + bookAuthor.innerText;
-      bookCover.classList.add("book-cover");
-      bookCoverWrapper.appendChild(bookCover);
-    });
-  };
+const createBookCover = (book, bookTitle, bookAuthor, bookWrapper) => {
+  const bookCover = document.createElement("img");
+  let coverUrl = book["volumeInfo"]["imageLinks"]["thumbnail"];
+  let noEdgeCurlUrl = coverUrl.replace(/&edge=curl/g, "");
+  bookCover.src = noEdgeCurlUrl;
+  bookCover.alt =
+    "A cover image of " + bookTitle.innerText + " by " + bookAuthor.innerText;
+  bookCover.title = bookTitle.innerText + " by " + bookAuthor.innerText;
+  bookCover.classList.add("book-cover");
+  return bookCover;
 };
