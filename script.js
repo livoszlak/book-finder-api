@@ -1,4 +1,5 @@
 window.onload = function () {
+  // Defined constants for the base URL, API key, and some HTML elements
   const baseUrl = "https://www.googleapis.com/books/v1/volumes";
   const key = "AIzaSyCnjNdK4OUoRgi9fwcxHCSlJSg8TA6nPkA";
   const dataWrapper = document.getElementById("data-wrapper");
@@ -66,6 +67,7 @@ window.onload = function () {
     { name: "Welsh", lang: "cy" },
   ];
 
+  // Function to create options for the language select element
   const createLanguageOptions = (languages) => {
     const langSelect = document.getElementById("language");
     languages.forEach((language) => {
@@ -79,6 +81,7 @@ window.onload = function () {
 
   createLanguageOptions(languages);
 
+  // Function to clear the data wrapper
   const clear = () => {
     dataWrapper.innerHTML = "";
   };
@@ -87,6 +90,7 @@ window.onload = function () {
     clear();
   });
 
+  // Function to search and fetch data
   const searchAndFetchData = (searchValue, searchType, selectedLanguage) => {
     clear();
     fetchData(searchValue, searchType, selectedLanguage);
@@ -94,6 +98,7 @@ window.onload = function () {
     selectedLanguage.value = "";
   };
 
+  // Search function that is called in event listeners for search button and the enter key
   const handleSearch = () => {
     clear();
     let searchType = document.getElementById("search-type").value;
@@ -117,6 +122,7 @@ window.onload = function () {
     }
   });
 
+  // Sorting function by title
   const sortByTitle = (a, b) => {
     const titleA = a.volumeInfo?.title?.toLowerCase();
     const titleB = b.volumeInfo?.title?.toLowerCase();
@@ -129,6 +135,7 @@ window.onload = function () {
     return 0;
   };
 
+  // Sorting function by author
   const sortByAuthor = (a, b) => {
     const authorA = a.volumeInfo?.authors[0]?.toLowerCase().split(" ");
     const authorB = b.volumeInfo?.authors[0]?.toLowerCase().split(" ");
@@ -147,6 +154,7 @@ window.onload = function () {
     return 0;
   };
 
+  // Data fetch from Google Books API
   const fetchData = async (searchValue, searchType, language) => {
     let queryParam = "";
     if (searchType === "title") {
@@ -172,6 +180,7 @@ window.onload = function () {
     );
     const data = await response.json();
 
+    // Checking for unnecessary duplicates in results
     data.items.forEach((item) => {
       if (
         item["volumeInfo"]["imageLinks"] &&
@@ -200,6 +209,7 @@ window.onload = function () {
       }
     });
 
+    // Appending results using separate functions for building different elements
     const displayData = (data) => {
       data.forEach((book) => {
         const bookWrapper = createBookWrapper(book);
@@ -240,6 +250,7 @@ window.onload = function () {
   };
 };
 
+// Following functions control how the data is appended to the DOM (and are called in the displayData function)
 const createBookWrapper = () => {
   const bookWrapper = document.createElement("div");
   bookWrapper.classList.add("book-wrapper");
