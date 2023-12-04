@@ -5,6 +5,7 @@ window.onload = function () {
   const dataWrapper = document.getElementById("data-wrapper");
   const clearButton = document.getElementById("clear-button");
   const searchButton = document.getElementById("search-button");
+  let selectedLanguage = "";
   let search = document.getElementById("search-term");
   let uniqueBooks = [];
 
@@ -84,6 +85,7 @@ window.onload = function () {
   // Function to clear the data wrapper
   const clear = () => {
     dataWrapper.innerHTML = "";
+    uniqueBooks = [];
   };
 
   clearButton.addEventListener("click", () => {
@@ -92,10 +94,8 @@ window.onload = function () {
 
   // Function to search and fetch data
   const searchAndFetchData = (searchValue, searchType, selectedLanguage) => {
-    clear();
     fetchData(searchValue, searchType, selectedLanguage);
     search.value = "";
-    selectedLanguage.value = "";
   };
 
   // Search function that is called in event listeners for search button and the enter key
@@ -103,7 +103,7 @@ window.onload = function () {
     clear();
     let searchType = document.getElementById("search-type").value;
     let searchValue = search.value;
-    let selectedLanguage = document.getElementById("language").value;
+    selectedLanguage = document.getElementById("language").value;
     if (searchType === "author") {
       let authorName = searchValue;
       let authorLastName = authorName.split(" ").pop();
