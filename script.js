@@ -82,7 +82,7 @@ window.onload = function () {
 
   createLanguageOptions(languages);
 
-  // Function to clear the data wrapper
+  // Function to clear the data wrapper and the uniqueBooks array
   const clear = () => {
     dataWrapper.innerHTML = "";
     uniqueBooks = [];
